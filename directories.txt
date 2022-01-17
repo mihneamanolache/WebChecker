@@ -1,0 +1,12 @@
+login
+cpanel
+archive
+resources
+email
+wp-content
+admin
+.httaccess
+.httaccess1
+passwd
+passwords
+intranet

@@ -1,0 +1,9 @@
+python3 WebChecker.py -u joomla.org                                                              
+
+python3 WebChecker.py -u https://www.harvard.edu/                                                
+
+python3 WebChecker.py -u rattanfurnitureuk.co.uk 
+
+python3 WebChecker.py -u https://www.sevillafc.es/ -b 'directories.txt'
+
+python3 WebChecker.py -u scoalatop.ro -b 'directories.txt'    
