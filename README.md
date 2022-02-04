@@ -51,7 +51,7 @@ passwd
 passwords
 intranet
 ```
-*Note that you can use any other wordlist (ie. [rockyou.txt](https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt "rockyou.txt")). Just specify the path to the file after `-b`*
+*Note that you can use any other wordlist (ie. [dnsmap.txt](https://github.com/Blkzer0/Wordlists/blob/master/dnsmap.txt "dnsmap.txt")). Just specify the path to the file after `-b`*
 
 If used withoth the `--url` switch, the program will prompt the user to enter the target website manually:
 ```
