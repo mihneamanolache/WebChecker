@@ -2,6 +2,8 @@
 ![Generic badge](https://img.shields.io/badge/Version-1.0.0-RED.svg)
 
 **WebChecker** is a simple information gathering tool designed to help pentesters gather information about a target website.
+![Screen-Recording-2022-02-04-at-0](https://user-images.githubusercontent.com/43548656/152489199-8c2aa54e-a304-4258-b17b-dc881220cff0.gif)
+
 
 ## Highlights 
 **WebChecker** `1.0.0` supports:
