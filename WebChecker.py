@@ -4,7 +4,6 @@ import argparse
 from termcolor import cprint
 import os
 
-######################## ARGUMENTS ########################
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-u", "--url", help="Specify the URL ypu want to Check")
