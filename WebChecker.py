@@ -69,7 +69,7 @@ try:
 
     print('[!] {} seems to be online'.format(url))
     
-    print("[*] Attempting to identify potential CMS...", 'yellow')
+    print("[*] Attempting to identify potential CMS...")
 
 
     print("[!] Running WordPress scans...")
