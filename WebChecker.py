@@ -17,7 +17,7 @@ no_cms_flag = True
 wordpress_flg = False
 joomla_flag = False
 drupal_flag = False
-confidence = 0
+certainty = 0
 url = ''
 url_request = ''
 url_socket = ''
@@ -29,7 +29,6 @@ __          __  _      _____ _               _               __   ___
   \ \/  \/ / _ \ '_ \| |    | '_ \ / _ \/ __| |/ / _ \ '__|  | || | | |
    \  /\  /  __/ |_) | |____| | | |  __/ (__|   <  __/ |     | || |_| |
     \/  \/ \___|_.__/ \_____|_| |_|\___|\___|_|\_\___|_|     |_(_)___/ 
-
                             by mihnaemanolache
                     https://github.com/mihneamanolache/
     ''')
@@ -63,7 +62,7 @@ try:
     
     r = requests.get(url_request, allow_redirects=True, headers=user_agent)
 
-    IP_addres = socket.gethostbyname(url_socket)
+    IP = socket.gethostbyname(url_socket)
 
     cprint(f'[*] Checking: {url}...', 'yellow')
     cprint(f'[!] {url} seems to be online', 'green')
@@ -80,7 +79,7 @@ try:
         cprint(f"    [+] WordPress login page available at {url_request}/wp-login.php", 'green')
         no_cms_flag = False
         wordpress_flg = True
-        confidence += 25
+        certainty += 25
     else:
         cprint(f"    [-] WordPress login page not available", 'red')
     
@@ -89,10 +88,10 @@ try:
         no_cms_flag = False
         wordpress_flg = True
         cprint(f"    [+] WP-Admin/upgrade.php page available at {url_request}/wp-admin/upgrade.php", 'green')
-        if confidence == 100:
+        if certainty == 100:
             pass
         else:    
-            confidence += 25
+            certainty += 25
     else:
         cprint(f"    [-] WP-Admin/upgrade.php page not available", 'red')
     
@@ -101,10 +100,10 @@ try:
         no_cms_flag = False
         wordpress_flg = True
         cprint(f"    [+] WP API available at {url_request}/wp-json/wp/v2/", 'green')
-        if confidence == 100:
+        if certainty == 100:
             pass
         else:    
-            confidence += 25
+            certainty += 25
     else:
         cprint(f"    [-] WP API not available", 'red')
     
@@ -113,10 +112,10 @@ try:
         no_cms_flag = False
         wordpress_flg = True
         cprint(f"    [+] Robots.txt fount at {url_request}/robots.txt containing 'wp_admin'", 'green')
-        if confidence == 100:
+        if certainty == 100:
             pass
         else:    
-            confidence += 25
+            certainty += 25
     else:
         cprint(f"    [-] Robots.txt not found", 'red')
     
@@ -128,7 +127,7 @@ try:
         no_cms_flag = False
         joomla_flag = True
         cprint(f"    [+] {url_request} seems to be running on Joomla", 'green')
-        confidence += 100
+        certainty += 100
     else:
         cprint(f"    [-] {url_request} doesn't seem to be running on Joomla", 'red')
    
@@ -139,7 +138,7 @@ try:
     if drupal_flag_url.status_code == 200 and 'drupal' in drupal_flag_url.text and '404' not in drupal_flag_url.text:
         no_cms_flag = False
         drupal_flag = True
-        confidence += 33
+        certainty += 33
         cprint(f"    [+] Drupal Readme.txt detected at {url_request}/readme.txt", 'green')
     else:
         cprint(f"    [-] Drupal Readme.txt not detected", 'red')
@@ -148,7 +147,7 @@ try:
     if drupal_flag_url.status_code == 200 and 'name="Generator" content="Drupal' in drupal_flag_url.text:
         no_cms_flag = False
         drupal_flag = True
-        confidence += 33
+        certainty += 33
         cprint(f"    [+] Drupal strings detected.", 'green')
     else:
         cprint(f"    [-] No Drupal string detected", 'red')
@@ -157,7 +156,7 @@ try:
     if drupal_flag_url.status_code == 200 and 'drupal' in drupal_flag_url.text and '404' not in drupal_flag_url.text:
         no_cms_flag = False
         drupal_flag = True
-        confidence += 33
+        certainty += 33
         cprint(f"    [+] Drupal modules detected at {url_request}/modules/README.txt", 'green')
     else:
         cprint(f"    [-] No Drupal modules detected", 'red')
@@ -173,14 +172,14 @@ try:
     if no_cms_flag:
         cprint(f"   [!] {url} doesn't seem to run any known CMS", 'yellow')
     elif wordpress_flg:
-        cprint(f"   [+] {url} seems to be running WordPress. [Confidence: {confidence}%]", 'green')
+        cprint(f"   [+] {url} seems to be running WordPress. [certainty: {certainty}%]", 'green')
     elif joomla_flag:
-        cprint(f"   [+] {url} seems to be running Joomla. [Confidence: {confidence}%]", 'green')
+        cprint(f"   [+] {url} seems to be running Joomla. [certainty: {certainty}%]", 'green')
     elif drupal_flag:
-        cprint(f"   [+] {url} seems to be running Drupal. [Confidence: {confidence}%]", 'green')
+        cprint(f"   [+] {url} seems to be running Drupal. [certainty: {certainty}%]", 'green')
     cprint(f'   [+] HTTP Status:    {status}', 'green')
     cprint(f'   [+] Server type:    {server_type}', 'green')
-    cprint(f'   [+] Server IP:      {IP_addres}', 'green')
+    cprint(f'   [+] Server IP:      {IP}', 'green')
     print('')
     cprint('-'*term_size.columns, 'blue')
     
