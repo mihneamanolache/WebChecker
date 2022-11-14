@@ -13,11 +13,10 @@ args = parser.parse_args()
 
 ########################  GLOBALS  ########################
 
-CMS_error = True
-WP = False
-JOOM = False
-MAG = False
-DRUP = False
+no_cms_flag = True
+wordpress_flg = False
+joomla_flag = False
+drupal_flag = False
 confidence = 0
 url = ''
 url_request = ''
@@ -76,19 +75,19 @@ try:
     # ------ CHECKING WORDPRESS ------ #
     cprint("[!] Running WordPress scans...", 'magenta')
     
-    wp_url = requests.get(url_request + '/wp-login.php', allow_redirects=True, headers=user_agent)
-    if wp_url.status_code == 200 and "user_login" in wp_url.text and "404" not in wp_url.text:
+    wordpress_flg_url = requests.get(url_request + '/wp-login.php', allow_redirects=True, headers=user_agent)
+    if wordpress_flg_url.status_code == 200 and "user_login" in wordpress_flg_url.text and "404" not in wordpress_flg_url.text:
         cprint(f"    [+] WordPress login page available at {url_request}/wp-login.php", 'green')
-        CMS_error = False
-        WP = True
+        no_cms_flag = False
+        wordpress_flg = True
         confidence += 25
     else:
         cprint(f"    [-] WordPress login page not available", 'red')
     
-    wp_url = requests.get(url_request + '/wp-admin/upgrade.php', allow_redirects=False, headers=user_agent)
-    if wp_url.status_code == 200 and "404" not in wp_url.text:
-        CMS_error = False
-        WP = True
+    wordpress_flg_url = requests.get(url_request + '/wp-admin/upgrade.php', allow_redirects=False, headers=user_agent)
+    if wordpress_flg_url.status_code == 200 and "404" not in wordpress_flg_url.text:
+        no_cms_flag = False
+        wordpress_flg = True
         cprint(f"    [+] WP-Admin/upgrade.php page available at {url_request}/wp-admin/upgrade.php", 'green')
         if confidence == 100:
             pass
@@ -97,10 +96,10 @@ try:
     else:
         cprint(f"    [-] WP-Admin/upgrade.php page not available", 'red')
     
-    wp_url = requests.get(url_request + '/wp-json/wp/v2/', allow_redirects=False, headers=user_agent)
-    if wp_url.status_code == 200 and "404" not in wp_url.text:
-        CMS_error = False
-        WP = True
+    wordpress_flg_url = requests.get(url_request + '/wp-json/wp/v2/', allow_redirects=False, headers=user_agent)
+    if wordpress_flg_url.status_code == 200 and "404" not in wordpress_flg_url.text:
+        no_cms_flag = False
+        wordpress_flg = True
         cprint(f"    [+] WP API available at {url_request}/wp-json/wp/v2/", 'green')
         if confidence == 100:
             pass
@@ -109,10 +108,10 @@ try:
     else:
         cprint(f"    [-] WP API not available", 'red')
     
-    wp_url = requests.get(url_request + '/robots.txt', allow_redirects=True, headers=user_agent)
-    if wp_url.status_code == 200 and "wp-admin" in wp_url.text:
-        CMS_error = False
-        WP = True
+    wordpress_flg_url = requests.get(url_request + '/robots.txt', allow_redirects=True, headers=user_agent)
+    if wordpress_flg_url.status_code == 200 and "wp-admin" in wordpress_flg_url.text:
+        no_cms_flag = False
+        wordpress_flg = True
         cprint(f"    [+] Robots.txt fount at {url_request}/robots.txt containing 'wp_admin'", 'green')
         if confidence == 100:
             pass
@@ -124,10 +123,10 @@ try:
     # ------ CHECKING JOOMLA ------ #
     cprint("[!] Running Joomla scans...", 'magenta')
 
-    joom_url = requests.get(url_request + '/administrator/')
-    if joom_url.status_code == 200 and "mod-login-username" in joom_url.text and "404" not in joom_url.text:
-        CMS_error = False
-        JOOM = True
+    joomla_flag_url = requests.get(url_request + '/administrator/')
+    if joomla_flag_url.status_code == 200 and "mod-login-username" in joomla_flag_url.text and "404" not in joomla_flag_url.text:
+        no_cms_flag = False
+        joomla_flag = True
         cprint(f"    [+] {url_request} seems to be running on Joomla", 'green')
         confidence += 100
     else:
@@ -136,28 +135,28 @@ try:
     # ------ CHECKING DRUPAL ------ #
     cprint("[!] Running Drupal scans...", 'magenta')
 
-    drup_url = requests.get(url_request + '/readme.txt')
-    if drup_url.status_code == 200 and 'drupal' in drup_url.text and '404' not in drup_url.text:
-        CMS_error = False
-        DRUP = True
+    drupal_flag_url = requests.get(url_request + '/readme.txt')
+    if drupal_flag_url.status_code == 200 and 'drupal' in drupal_flag_url.text and '404' not in drupal_flag_url.text:
+        no_cms_flag = False
+        drupal_flag = True
         confidence += 33
         cprint(f"    [+] Drupal Readme.txt detected at {url_request}/readme.txt", 'green')
     else:
         cprint(f"    [-] Drupal Readme.txt not detected", 'red')
 
-    drup_url = requests.get(url_request)
-    if drup_url.status_code == 200 and 'name="Generator" content="Drupal' in drup_url.text:
-        CMS_error = False
-        DRUP = True
+    drupal_flag_url = requests.get(url_request)
+    if drupal_flag_url.status_code == 200 and 'name="Generator" content="Drupal' in drupal_flag_url.text:
+        no_cms_flag = False
+        drupal_flag = True
         confidence += 33
         cprint(f"    [+] Drupal strings detected.", 'green')
     else:
         cprint(f"    [-] No Drupal string detected", 'red')
 
-    drup_url = requests.get(url_request + '/modules/README.txt')
-    if drup_url.status_code == 200 and 'drupal' in drup_url.text and '404' not in drup_url.text:
-        CMS_error = False
-        DRUP = True
+    drupal_flag_url = requests.get(url_request + '/modules/README.txt')
+    if drupal_flag_url.status_code == 200 and 'drupal' in drupal_flag_url.text and '404' not in drupal_flag_url.text:
+        no_cms_flag = False
+        drupal_flag = True
         confidence += 33
         cprint(f"    [+] Drupal modules detected at {url_request}/modules/README.txt", 'green')
     else:
@@ -171,13 +170,13 @@ try:
     server_type = r.headers['Server']
     cprint('App overview:', 'magenta')
     cprint(f'   [+] {url} is available', 'green')
-    if CMS_error:
+    if no_cms_flag:
         cprint(f"   [!] {url} doesn't seem to run any known CMS", 'yellow')
-    elif WP:
+    elif wordpress_flg:
         cprint(f"   [+] {url} seems to be running WordPress. [Confidence: {confidence}%]", 'green')
-    elif JOOM:
+    elif joomla_flag:
         cprint(f"   [+] {url} seems to be running Joomla. [Confidence: {confidence}%]", 'green')
-    elif DRUP:
+    elif drupal_flag:
         cprint(f"   [+] {url} seems to be running Drupal. [Confidence: {confidence}%]", 'green')
     cprint(f'   [+] HTTP Status:    {status}', 'green')
     cprint(f'   [+] Server type:    {server_type}', 'green')
