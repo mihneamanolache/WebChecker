@@ -132,46 +132,7 @@ try:
         confidence += 100
     else:
         cprint(f"    [-] {url_request} doesn't seem to be running on Joomla", 'red')
-
-    # ------ CHECKING MAGENTO ------ #
-    cprint("[!] Running Magento scans...", 'magenta')
-
-    mag_url = requests.get(url_request + '/index.php', allow_redirects=False)
-    if mag_url.status_code == 200 and '/mage/' in mag_url.text or 'magento' in mag_url.text:
-        CMS_error = False
-        MAG = True
-        confidence += 25
-        cprint(f"    [+] Magento strings detected.", 'green')
-    else:
-        cprint(f"    [-] No Magento strings detected", 'red')
-        
-    mag_url = requests.get(url_request + '/index.php/admin/', allow_redirects=False)
-    if mag_url.status_code == 200 and 'login' in mag_url.text and "404" not in mag_url.text:
-        CMS_error = False
-        MAG = True   
-        confidence += 25     
-        cprint(f"    [+] Potential Magento admin login at {url_request}/index.php/admin/", 'green')
-    else:
-        cprint(f"    [-] {url_request}/index.php/admin/ not available", 'red')
-    
-    mag_url = requests.get(url_request + '/RELEASE_NOTES.txt')
-    if mag_url.status_code == 200 and 'magento' in mag_url.text:
-        CMS_error = False
-        MAG = True   
-        confidence += 25     
-        cprint(f"    [+] Magento Release_Notes.txt detected at {url_request}/RELEASE_NOTES.txt", 'green')
-    else:
-        cprint(f"    [-] Magento Release_Notes.txt not detected", 'red')
-    
-    mag_url = requests.get(url_request + '/js/mage/cookies.js')
-    if mag_url.status_code == 200 and "404" not in mag_url.text:
-        CMS_error = False
-        MAG = True    
-        confidence += 25    
-        cprint(f"    [+] Magento cookies.js detected at {url_request}/js/mage/cookies.jst", 'green')
-    else:
-        cprint(f"    [-] Magento cookies.js not detected", 'red') 
-
+   
     # ------ CHECKING DRUPAL ------ #
     cprint("[!] Running Drupal scans...", 'magenta')
 
@@ -216,8 +177,6 @@ try:
         cprint(f"   [+] {url} seems to be running WordPress. [Confidence: {confidence}%]", 'green')
     elif JOOM:
         cprint(f"   [+] {url} seems to be running Joomla. [Confidence: {confidence}%]", 'green')
-    elif MAG:
-        cprint(f"   [+] {url} seems to be running Magento. [Confidence: {confidence}%]", 'green')
     elif DRUP:
         cprint(f"   [+] {url} seems to be running Drupal. [Confidence: {confidence}%]", 'green')
     cprint(f'   [+] HTTP Status:    {status}', 'green')
